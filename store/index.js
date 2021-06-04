@@ -30,9 +30,13 @@ export default {
   },
   actions: {
     CREATE_ITEM: (context, { item, resource }) => new Promise((resolve, reject) => {
-      const newItem = item
-      newItem.createdAt = Math.floor(Date.now() / 1000)
-      newItem.id = uuid()
+      const dateNow = Math.floor(Date.now() / 1000)
+      const newItem = {
+        ...item,
+        createdAt: dateNow,
+        updatedAt: dateNow,
+        id: uuid()
+      }
       db
         .collection(resource)
         .doc(newItem.id)
@@ -72,11 +76,12 @@ export default {
         })
     },
     UPDATE_ITEM: (context, { item, resource }) => new Promise((resolve, reject) => {
+      const newItem = { ...item, updatedAt: Math.floor(Date.now() / 1000) }
       db
         .collection(resource)
-        .doc(item.id)
-        .update(item)
-        .then(() => resolve(item))
+        .doc(newItem.id)
+        .update(newItem)
+        .then(() => resolve(newItem))
         .catch(error => reject(error))
     })
   }

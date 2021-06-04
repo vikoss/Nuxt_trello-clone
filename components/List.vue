@@ -1,12 +1,14 @@
 <template>
-  <div class="w-64 h-auto">
-    <div class="bg-purple-200 p-1">
+  <div>
+    <div class="bg-purple-200 p-1 mx-1 rounded w-64">
       <section>
-        <h1>{{ name }}</h1>
+        <h1 class="font-bold text-base ml-2">
+          {{ name }}
+        </h1>
       </section>
       <section
         id="drop-zone"
-        class="p-12"
+        class="py-5"
         @dragover.prevent
         @drop.prevent="drop"
       >
@@ -56,7 +58,7 @@ export default {
     }
   }),
   computed: {
-    ...mapGetters(['cards', 'itemTmp'])
+    ...mapGetters(['cards', 'itemTmp', 'lists'])
   },
   created () {
     this.$store.dispatch('FETCH_CARDS', this.listId)
@@ -69,13 +71,29 @@ export default {
         item: { ...this.card, listId: this.listId, title },
         resource: 'cards'
       })
+        .then(({ title }) => this.createItem({
+          item: {
+            boardId: this.$route.params.id,
+            text: `${this.$store.state.auth.user.email} ah agregado la tarjeta "${title}" a la lista "${this.lists[this.$route.params.id].find(list => list.id === this.listId).name}"`
+          },
+          resource: 'activities'
+        }))
     },
     drop () {
       this.updateItem({
         item: { ...this.itemTmp, listId: this.listId },
         resource: 'cards'
       })
-        .then(() => this.setCardDrag({}))
+        .then(() => {
+          this.createItem({
+            item: {
+              boardId: this.$route.params.id,
+              text: `${this.$store.state.auth.user.email} ah movido la tarjeta "${this.itemTmp.title}" de la lista "${this.lists[this.$route.params.id].find(list => list.id === this.itemTmp.listId).name}" a "${this.lists[this.$route.params.id].find(list => list.id === this.listId).name}"`
+            },
+            resource: 'activities'
+          })
+          this.setCardDrag({})
+        })
     },
     drag (card) {
       this.setCardDrag(card)

@@ -1,21 +1,30 @@
 <template>
-  <div class="bg-purple-200 hover:bg-purple-300 rounded-lg shadow-lg h-24">
-    <a :href="href" class="inline-block w-full h-full">
-      <p class="p-2">{{ name }}</p>
-    </a>
+  <div
+    :class="`bg-${colorDefault}-300 hover:bg-${colorDefault}-400 rounded-lg shadow-lg h-24 cursor-pointer`"
+    @click="$router.push(route)"
+  >
+    <p class="p-2 text-white font-bold">
+      {{ name }}
+    </p>
   </div>
 </template>
 
 <script>
 export default {
   props: {
-    href: {
+    route: {
       type: String,
       default: '#'
     },
     name: {
       type: String,
       default: ''
+    },
+    color: String
+  },
+  computed: {
+    colorDefault () {
+      return this.color === '' ? 'gray' : this.color
     }
   }
 }

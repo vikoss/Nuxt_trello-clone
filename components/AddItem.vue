@@ -1,9 +1,12 @@
 <template>
   <div>
     <section v-show="!showInput">
-      <div class="flex items-center cursor-pointer hover:bg-gray-50" @click="toggle">
+      <div
+        class="flex items-center cursor-pointer bg-white-light hover:bg-white-transparent rounded shadow w-full"
+        @click="toggle"
+      >
         <plus-icon size="2x" />
-        <p>Agrega nueva {{ nameItem }}</p>
+        <p>Agregar {{ nameItem }}</p>
       </div>
     </section>
     <section v-show="showInput">
@@ -12,7 +15,7 @@
         v-model="title"
         type="text"
         :name="id"
-        :placeholder="`Escribe el titulo de la ${nameItem}`"
+        placeholder="Escribe el titulo..."
         class="p-1.5 border-2 border-blue-800 focus:outline-none text-sm shadow w-full mb-1"
       >
       <section class="flex justify-between items-center">
@@ -34,7 +37,7 @@
 
 <script>
 import { v4 as uuid } from 'uuid'
-import { XIcon, PlusIcon } from '@vue-hero-icons/solid'
+import { XIcon, PlusIcon } from '@vue-hero-icons/outline'
 
 export default {
   components: { XIcon, PlusIcon },
@@ -42,11 +45,6 @@ export default {
     nameItem: {
       type: String,
       default: 'tarjeta'
-    },
-    // ???
-    placeholder: {
-      type: String,
-      default: 'Escribe el titulo'
     }
   },
   data: () => ({
