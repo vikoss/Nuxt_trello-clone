@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="bg-purple-200 p-1 mx-1 rounded w-64">
+    <div class="bg-white-transparent p-1 mx-1 rounded w-64">
       <section>
-        <h1 class="font-bold text-base ml-2">
+        <h1 class="font-bold text-base ml-2 text-white">
           {{ name }}
         </h1>
       </section>

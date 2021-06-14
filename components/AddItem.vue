@@ -2,7 +2,7 @@
   <div>
     <section v-show="!showInput">
       <div
-        class="flex items-center cursor-pointer bg-white-light hover:bg-white-transparent rounded shadow w-full"
+        class="flex items-center cursor-pointer bg-white-light hover:bg-white-transparent rounded shadow w-full text-white"
         @click="toggle"
       >
         <plus-icon size="2x" />
@@ -10,6 +10,14 @@
       </div>
     </section>
     <section v-show="showInput">
+      <section v-if="nameItem === 'tablero'" class="flex justify-between items-center">
+        <p>Elige el color del tablero...</p>
+        <v-swatches
+          v-model="color"
+          :swatches="colorValues"
+          popover-x="left"
+        />
+      </section>
       <input
         :id="id"
         v-model="title"
@@ -38,9 +46,12 @@
 <script>
 import { v4 as uuid } from 'uuid'
 import { XIcon, PlusIcon } from '@vue-hero-icons/outline'
+import VSwatches from 'vue-swatches'
+import 'vue-swatches/dist/vue-swatches.css'
+import colors from '~/utils/colors'
 
 export default {
-  components: { XIcon, PlusIcon },
+  components: { XIcon, PlusIcon, VSwatches },
   props: {
     nameItem: {
       type: String,
@@ -50,11 +61,19 @@ export default {
   data: () => ({
     title: '',
     id: uuid(),
-    showInput: false
+    showInput: false,
+    color: Object.keys(colors)[0],
+    colorValues: Object.keys(colors)
   }),
   methods: {
     createItem () {
-      this.$emit('create-item', this.title)
+      const item = this.nameItem === 'tablero'
+        ? {
+            background: colors[this.color],
+            name: this.title
+          }
+        : this.title
+      this.$emit('create-item', item)
       this.toggle()
     },
     focus () {

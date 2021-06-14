@@ -1,7 +1,7 @@
 <template>
-  <div class="bg-white hover:bg-gray-50 rounded-lg shadow-lg m-1 p-1 cursor-pointer" @click="openModalCard">
+  <div class="bg-white-light hover:bg-white-transparent rounded shadow-lg m-1 p-1 cursor-pointer" @click="openModalCard">
     <section>
-      <p>
+      <p class="text-white">
         {{ card.title }}
       </p>
     </section>

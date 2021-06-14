@@ -1,15 +1,17 @@
 <template>
   <div
-    :class="`bg-${colorDefault}-300 hover:bg-${colorDefault}-400 rounded-lg shadow-lg h-24 cursor-pointer`"
-    @click="$router.push(route)"
+    :class="`bg-${colorDefault}-200 hover:bg-${colorDefault}-400 rounded-lg shadow-2xl h-24 cursor-pointer`"
+    @click="openBoard"
   >
-    <p class="p-2 text-white font-bold">
+    <p class="p-2 text-gray font-bold">
       {{ name }}
     </p>
   </div>
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
+
 export default {
   props: {
     route: {
@@ -20,11 +22,21 @@ export default {
       type: String,
       default: ''
     },
-    color: String
+    color: {
+      type: String,
+      default: ''
+    }
   },
   computed: {
     colorDefault () {
       return this.color === '' ? 'gray' : this.color
+    }
+  },
+  methods: {
+    ...mapMutations({ setBackgroundColor: 'SET_BACKGROUND_COLOR' }),
+    openBoard () {
+      this.setBackgroundColor(this.color)
+      return this.$router.push(this.route)
     }
   }
 }

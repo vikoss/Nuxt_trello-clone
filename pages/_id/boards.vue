@@ -8,8 +8,8 @@
     <section v-else>
       <span v-if="!!recentlyViewedBoards.length">
         <div class="flex items-center my-2">
-          <clock-icon />
-          <h1 class="text-base font-bold ml-1">
+          <clock-icon class="text-white" />
+          <h1 class="text-base font-bold ml-1 text-white">
             Visto recientemente
           </h1>
         </div>
@@ -28,8 +28,8 @@
           * create computed property with last opened board
        -->
       <div class="flex items-center my-2">
-        <collection-icon />
-        <h1 class="text-base font-bold ml-1">
+        <collection-icon class="text-white" />
+        <h1 class="text-base font-bold ml-1 text-white">
           Todos tus tableros
         </h1>
       </div>
@@ -41,7 +41,10 @@
           :name="boardItem.name"
           :color="boardItem.background"
         />
-        <add-item name-item="tablero" />
+        <add-item
+          name-item="tablero"
+          @create-item="createBoard"
+        />
       </div>
     </section>
   </div>
@@ -79,11 +82,11 @@ export default {
     this.$store.dispatch('FETCH_BOARDS', this.$route.params.id)
   },
   methods: {
-    createBoard (name) {
+    createBoard (board) {
       this.board.ownerId = this.$route.params.id
       this.board.memberId = this.$route.params.id
-      this.board.name = name
-      this.$store.dispatch('CREATE_ITEM', { item: this.board, resource: 'boards' })
+      const item = { ...this.board, ...board }
+      this.$store.dispatch('CREATE_ITEM', { item, resource: 'boards' })
     }
   }
 }

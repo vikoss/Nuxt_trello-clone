@@ -9,11 +9,13 @@ export default {
     cards: {},
     activities: {},
     itemTmp: {},
+    backgroundColor: 'gray',
     modals: {
       card: false
     }
   }),
   mutations: {
+    SET_BACKGROUND_COLOR: (state, color) => (state.backgroundColor = color),
     SET_ITEM_TMP: (state, item) => (state.itemTmp = item),
     SET_MODAL: (state, { name, value }) => (state.modals[name] = value),
     SET_ITEMS: (state, { resource, id, items }) => {
@@ -26,7 +28,8 @@ export default {
     cards: state => state.cards,
     activities: state => state.activities,
     itemTmp: state => state.itemTmp,
-    modals: state => state.modals
+    modals: state => state.modals,
+    backgroundColor: state => state.backgroundColor
   },
   actions: {
     CREATE_ITEM: (context, { item, resource }) => new Promise((resolve, reject) => {

@@ -6,13 +6,21 @@
     >
       <home-icon size="1.5x" class="text-white" />
     </span>
-    <span
-      class="rounded-full h-8 w-8 bg-white-light hover:bg-white-transparent text-sm flex justify-center
-        items-center font-bold cursor-pointer"
-      @click="logOut"
-    >
-      VT
-    </span>
+    <section>
+      <span
+        class="rounded-full h-8 w-8 bg-white-light hover:bg-white-transparent text-sm text-white
+          flex justify-center items-center font-bold cursor-pointer"
+        @click="logOut"
+      >
+        VT
+      </span>
+      <div class="cursor-pointer">
+        <span class="flex justify-center items-center border border-black p-1">
+          <p class="text-xs mr-1">Cerrar sesión</p>
+          <logout-icon size="1.3x" />
+        </span>
+      </div>
+    </section>
   </header>
 </template>
 
@@ -22,10 +30,11 @@
 // import { LogoutIcon } from "@vue-hero-icons/outline"
 // import { TrashIcon } from "@vue-hero-icons/outline"
 import { mapActions } from 'vuex'
-import { HomeIcon } from '@vue-hero-icons/outline'
+import { HomeIcon, LogoutIcon } from '@vue-hero-icons/outline'
 export default {
   components: {
-    HomeIcon
+    HomeIcon,
+    LogoutIcon
   },
   methods: {
     ...mapActions({ logOut: 'auth/SIGN_OUT' })
