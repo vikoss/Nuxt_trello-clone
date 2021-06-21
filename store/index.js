@@ -48,9 +48,10 @@ export default {
         .catch(error => reject(error))
     }),
     FETCH_BOARDS: ({ commit }, ownerId) => {
+      // WHERE array-contains
       db
         .collection('boards')
-        .where('ownerId', '==', ownerId)
+        .where('memberId', 'array-contains', ownerId)
         .onSnapshot((snapshot) => {
           const boards = []
           snapshot.forEach(board => boards.push(board.data()))
@@ -86,6 +87,17 @@ export default {
         .update(newItem)
         .then(() => resolve(newItem))
         .catch(error => reject(error))
+    }),
+    FETCH_ACTIVITIES: ({ commit, state }, boardId) => new Promise((resolve, reject) => {
+      db
+        .collection('activities')
+        .where('boardId', '==', boardId)
+        .onSnapshot((snapshot) => {
+          const activities = []
+          snapshot.forEach(list => activities.push(list.data()))
+          commit('SET_ITEMS', { items: activities, resource: 'activities', id: boardId })
+          resolve(state.activities)
+        }, error => reject(error))
     })
   }
 }

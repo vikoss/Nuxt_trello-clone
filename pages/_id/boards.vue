@@ -84,7 +84,7 @@ export default {
   methods: {
     createBoard (board) {
       this.board.ownerId = this.$route.params.id
-      this.board.memberId = this.$route.params.id
+      this.board.memberId = [this.$route.params.id]
       const item = { ...this.board, ...board }
       this.$store.dispatch('CREATE_ITEM', { item, resource: 'boards' })
     }

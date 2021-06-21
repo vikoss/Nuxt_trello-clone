@@ -1,4 +1,4 @@
-import { auth } from '~/plugins/firebase'
+import { auth, provider } from '~/plugins/firebase'
 
 export default {
   state: () => ({
@@ -6,7 +6,12 @@ export default {
   }),
   getters: {
     user: state => state.user,
-    isAuthenticated: state => Object.prototype.hasOwnProperty.call(state.user, 'id')
+    isAuthenticated: state => Object.prototype.hasOwnProperty.call(state.user, 'id'),
+    userInitials: state => (state.user.displayName
+      ? state.user.displayName.charAt()
+      : state.user.email
+        ? state.user.email.charAt()
+        : '').toUpperCase()
   },
   mutations: {
     SET_USER: (state, user) => {
@@ -14,30 +19,23 @@ export default {
     }
   },
   actions: {
-    SIGN_IN: ({ commit }, { email, password }) => new Promise((resolve, reject) => {
+    SIGN_IN: (ctx, { email, password }) => new Promise((resolve, reject) => {
       auth.signInWithEmailAndPassword(email, password)
-        .then(({ user }) => {
-          /* commit('SET_USER', {
-            email: user.email,
-            id: user.uid,
-            photoURL: user.photoURL,
-            emailVerified: user.emailVerified,
-            displayName: user.displayName
-          }) */
-          resolve({ message: 'Ok!' })
-        })
+        .then(() => resolve({ message: 'Ok!' }))
         .catch(error => reject(error))
     }),
-    SIGN_OUT: ({ commit }) => new Promise((resolve, reject) => {
+    SIGN_OUT: ctx => new Promise((resolve, reject) => {
       auth.signOut()
-        .then(() => {
-          // commit('SET_USER', {})
-          resolve()
-        })
+        .then(() => resolve())
         .catch(error => reject(error))
     }),
     UPDATE_USER: ({ commit }) => {
       //
-    }
+    },
+    SIGN_IN_WITH_GOOGLE: ctx => new Promise((resolve, reject) => {
+      auth.signInWithPopup(provider)
+        .then(() => resolve({ message: 'Ok!' }))
+        .catch(error => reject(error))
+    })
   }
 }

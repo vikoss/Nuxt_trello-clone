@@ -31,11 +31,12 @@
     <button-base
       color="gray"
       text="🔒 Continuar con Google"
+      :click="loginWithGoogle"
     />
-    <div class="w-full border-b border-gray-400 mb-5 mt-12" />
+    <!--div class="w-full border-b border-gray-400 mb-5 mt-12" />
     <h2 class="cursor-pointer text-center hover:underline text-blue-700 hover:text-blue-800">
       Crear cuenta nueva
-    </h2>
+    </h2-->
   </div>
 </template>
 
@@ -58,12 +59,18 @@ export default {
     error: null
   }),
   methods: {
-    ...mapActions({ signIn: 'auth/SIGN_IN' }),
+    ...mapActions({ signIn: 'auth/SIGN_IN', signInWithGoogle: 'auth/SIGN_IN_WITH_GOOGLE' }),
     login () {
       this.error = null
       this.signIn(this.form)
         .then(() => this.$router.push(`/${this.$store.state.auth.user.id}/boards`))
         .catch(() => (this.error = 'El correo y/o contraseña son incorrectos.'))
+    },
+    loginWithGoogle () {
+      this.error = null
+      this.signInWithGoogle()
+        .then(() => this.$router.push(`/${this.$store.state.auth.user.id}/boards`))
+        .catch(() => (this.error = 'Upps ocurrio un problema.'))
     }
   }
 }
