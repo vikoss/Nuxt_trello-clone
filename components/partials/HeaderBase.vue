@@ -3,7 +3,7 @@
     <section>
       <span
         class="p-1 cursor-pointer bg-white-light hover:bg-white-transparent inline-block rounded"
-        @click="$router.push(`/${$store.state.auth.user.id}/boards`)"
+        @click="$router.push(`/${user.id}/boards`)"
       >
         <home-icon size="1.5x" class="text-white" />
       </span>
@@ -32,7 +32,7 @@
         </span>
         <p class="font-semibold">{{ user.displayName }}</p>
         <p class="opacity-50">{{ user.email }}</p>
-        <span class="border m-2 px-4 py-1 cursor-pointer" @click="logOut">
+        <span class="border m-2 px-4 py-1 cursor-pointer" @click="logout">
           <p class="text-xs mr-1 inline-block">Cerrar sesión</p>
           <logout-icon size="1.3x" class="inline-block" />
         </span>
@@ -63,6 +63,10 @@ export default {
   },
   methods: {
     ...mapActions({ logOut: 'auth/SIGN_OUT' }),
+    logout () {
+      this.logOut()
+        .then(() => this.$router.push('/login'))
+    },
     showLogout () {
       this.show = !this.show
     },

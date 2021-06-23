@@ -1,6 +1,6 @@
 <template>
   <div class="p-4">
-    <section v-if="!boards[$route.params.id]">
+    <section v-if="!boards[$route.params.userId]">
       <p>
         No tienes ningun tablero.
       </p>
@@ -17,7 +17,7 @@
           <board
             v-for="boardItem in recentlyViewedBoards"
             :key="boardItem.id"
-            :route="`/boards/${boardItem.id}`"
+            :route="`/${$route.params.userId}/boards/${boardItem.id}`"
             :name="boardItem.name"
             :color="boardItem.background"
           />
@@ -35,9 +35,9 @@
       </div>
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         <board
-          v-for="boardItem in boards[$route.params.id]"
+          v-for="boardItem in boards[$route.params.userId]"
           :key="boardItem.id"
-          :route="`/boards/${boardItem.id}`"
+          :route="`/${$route.params.userId}/boards/${boardItem.id}`"
           :name="boardItem.name"
           :color="boardItem.background"
         />
@@ -73,18 +73,18 @@ export default {
     ...mapGetters(['boards']),
     recentlyViewedBoards () {
       const lastHours = (Math.floor(Date.now() / 1000)) - (12 * 60 * 60)
-      return this.boards[this.$route.params.id].filter((board) => {
+      return this.boards[this.$route.params.userId].filter((board) => {
         return board.updatedAt > lastHours
       })
     }
   },
   beforeCreate () {
-    this.$store.dispatch('FETCH_BOARDS', this.$route.params.id)
+    this.$store.dispatch('FETCH_BOARDS', this.$route.params.userId)
   },
   methods: {
     createBoard (board) {
-      this.board.ownerId = this.$route.params.id
-      this.board.memberId = [this.$route.params.id]
+      this.board.ownerId = this.$route.params.userId
+      this.board.memberId = [this.$route.params.userId]
       const item = { ...this.board, ...board }
       this.$store.dispatch('CREATE_ITEM', { item, resource: 'boards' })
     }

@@ -7,7 +7,7 @@
       </h3>
       <x-icon size="2x" class="cursor-pointer float-right opacity-70 hover:opacity-50" @click="$emit('close')" />
     </section>
-    <section class="overflow-x-auto py-2" style="max-height: calc(100vh - 200px)">
+    <section v-if="!!activities.length" class="overflow-x-auto py-2" style="max-height: calc(100vh - 200px)">
       <div v-for="activity in activities" :key="activity.id" class="my-2">
         <p class="text-sm font-medium">
           {{ activity.text }}
@@ -16,6 +16,11 @@
           {{ activity.updatedAt | timestampToDateString }}
         </p>
       </div>
+    </section>
+    <section v-else class="my-2">
+      <p class="text-sm font-medium">
+        Ninguna actividad en el tablero.
+      </p>
     </section>
   </div>
 </template>

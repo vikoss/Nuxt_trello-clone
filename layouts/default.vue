@@ -16,7 +16,7 @@ export default {
   computed: {
     ...mapGetters({ color: 'backgroundColor' }),
     backgroundColor () {
-      return this.$route.name === 'boards-id'
+      return this.$route.name === 'userId-boards-boardId'
         ? `bg-gradient-to-t from-${this.color}-400 via-${this.color}-500 to-gray-600`
         : 'bg-gradient-to-t from-blue-100 via-blue-300 to-gray-600'
     }

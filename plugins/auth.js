@@ -9,7 +9,8 @@ export default ({ store, redirect }) => new Promise((resolve) => {
     } else {
       // unsubscribe and delete all state
       store.commit('auth/SET_USER', {})
-      resolve(redirect('/login'))
+      // resolve(redirect('/login'))
+      resolve()
     }
   })
 })

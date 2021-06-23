@@ -1,6 +1,7 @@
 import { v4 as uuid } from 'uuid'
 import Vue from 'vue'
 import { db } from '../plugins/firebase'
+import { orderByDate } from '~/utils/array'
 
 export default {
   state: () => ({
@@ -95,9 +96,37 @@ export default {
         .onSnapshot((snapshot) => {
           const activities = []
           snapshot.forEach(list => activities.push(list.data()))
-          commit('SET_ITEMS', { items: activities, resource: 'activities', id: boardId })
+          commit('SET_ITEMS', { items: orderByDate(activities), resource: 'activities', id: boardId })
           resolve(state.activities)
         }, error => reject(error))
+    }),
+    ADD_MEMBER_TO_BOARD: ({ rootGetters: getters, dispatch }, boardId) => new Promise((resolve, reject) => {
+      dispatch('FETCH_ITEM', { resource: 'boards', id: boardId })
+        .then(async (board) => {
+          const userId = getters['auth/user'].id
+          if (!board.memberId.includes(userId)) {
+            board.memberId.push(userId)
+            try {
+              resolve(await dispatch('UPDATE_ITEM', { item: board, resource: 'boards' }))
+            } catch (error) {
+              reject(new Error('Error updating document.'))
+            }
+          }
+          resolve(board)
+        })
+    }),
+    FETCH_ITEM: (cxt, { resource, id }) => new Promise((resolve, reject) => {
+      db
+        .collection(resource)
+        .doc(id)
+        .get()
+        .then((doc) => {
+          if (doc.exists) {
+            resolve(doc.data())
+          }
+          reject(new Error('No such document!'))
+        })
+        .catch(error => reject(error))
     })
   }
 }

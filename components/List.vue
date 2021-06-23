@@ -73,8 +73,8 @@ export default {
       })
         .then(({ title }) => this.createItem({
           item: {
-            boardId: this.$route.params.id,
-            text: `${this.$store.state.auth.user.email} ah agregado la tarjeta "${title}" a la lista "${this.lists[this.$route.params.id].find(list => list.id === this.listId).name}"`
+            boardId: this.$route.params.boardId,
+            text: `${this.$store.state.auth.user.email} ah agregado la tarjeta "${title}" a la lista "${this.lists[this.$route.params.boardId].find(list => list.id === this.listId).name}"`
           },
           resource: 'activities'
         }))
@@ -87,8 +87,8 @@ export default {
         .then(() => {
           this.createItem({
             item: {
-              boardId: this.$route.params.id,
-              text: `${this.$store.state.auth.user.email} ah movido la tarjeta "${this.itemTmp.title}" de la lista "${this.lists[this.$route.params.id].find(list => list.id === this.itemTmp.listId).name}" a "${this.lists[this.$route.params.id].find(list => list.id === this.listId).name}"`
+              boardId: this.$route.params.boardId,
+              text: `${this.$store.state.auth.user.email} ah movido la tarjeta "${this.itemTmp.title}" de la lista "${this.lists[this.$route.params.boardId].find(list => list.id === this.itemTmp.listId).name}" a "${this.lists[this.$route.params.boardId].find(list => list.id === this.listId).name}"`
             },
             resource: 'activities'
           })
