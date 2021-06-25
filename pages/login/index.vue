@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import InputBase from '~/components/InputBase'
 import ButtonBase from '~/components/ButtonBase'
 
@@ -58,19 +58,30 @@ export default {
     },
     error: null
   }),
+  computed: {
+    ...mapGetters('auth', ['isAuthenticated', 'user']),
+    redirect () {
+      return this.isAuthenticated
+        ? this.redirectToDashboard()
+        : ''
+    }
+  },
   methods: {
     ...mapActions({ signIn: 'auth/SIGN_IN', signInWithGoogle: 'auth/SIGN_IN_WITH_GOOGLE' }),
     login () {
       this.error = null
       this.signIn(this.form)
-        .then(() => this.$router.push(`/${this.$store.state.auth.user.id}/boards`))
+        .then(() => this.redirectToDashboard())
         .catch(() => (this.error = 'El correo y/o contraseña son incorrectos.'))
     },
     loginWithGoogle () {
       this.error = null
       this.signInWithGoogle()
-        .then(() => this.$router.push(`/${this.$store.state.auth.user.id}/boards`))
+        .then(() => this.redirectToDashboard())
         .catch(() => (this.error = 'Upps ocurrio un problema.'))
+    },
+    redirectToDashboard () {
+      this.$router.push(`/${this.user.id}/boards`)
     }
   }
 }

@@ -65,7 +65,7 @@ export default {
     ...mapActions({ logOut: 'auth/SIGN_OUT' }),
     logout () {
       this.logOut()
-        .then(() => this.$router.push('/login'))
+        .then(() => this.$router.push('/'))
     },
     showLogout () {
       this.show = !this.show

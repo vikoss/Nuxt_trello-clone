@@ -118,14 +118,6 @@ export default {
     },
     boardId () {
       return this.$route.params.boardId
-    },
-    backgroundColor () {
-      return this.board.background
-    }
-  },
-  watch: {
-    backgroundColor (color) {
-      this.setBackgroundColor(color)
     }
   },
   beforeCreate () {
@@ -135,7 +127,11 @@ export default {
       this.$store.dispatch('FETCH_BOARDS', this.$route.params.userId)
     }
   },
+  beforeDestroy () {
+    window.removeEventListener('click', this.hideActivities)
+  },
   mounted () {
+    this.setBackgroundColor(this.board.background)
     this.inviteURL = `${window.location.origin}/invite/${this.$route.params.boardId}`
     window
       .addEventListener('click', this.hideActivities)
@@ -144,9 +140,6 @@ export default {
     document
       .getElementById('button-invite-url')
       .addEventListener('click', this.copyToClipboard)
-  },
-  beforeDestroy () {
-    window.removeEventListener('click', this.hideActivities)
   },
   methods: {
     ...mapActions({
